@@ -3,7 +3,7 @@
 - NEW: all releases are build with the latest Qt 5.13.2
 - NEW: portable mode for all operating systems
 - NEW: on Linux multiple terminals are tried for rclone config ($TERMINAL then gnome-terminal followed by konsole, xfce4-terminal, xterm and x-terminal-emulator)
-- NEW: Windows releases have proper installer
+- NEW: Windows releases have proper installer - implemented using Inno Setup (https://github.com/jrsoftware/issrc)
 - NEW: macOS release is provided as dmg image file
 - NEW: macOS release works on all macOS versions starting with 10.9
 - NEW: Linux releases are provided as AppImage only
