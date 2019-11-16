@@ -1,4 +1,18 @@
 # Change Log
+## [1.7.0] - 2019-11
+- NEW: all releases are build with the latest Qt 5.13.2
+- NEW: portable mode for all operating systems
+- NEW: on Linux multiple terminals are tried for rclone config ($TERMINAL then gnome-terminal followed by konsole, xfce4-terminal, xterm and x-terminal-emulator)
+- NEW: Windows releases have proper installer
+- NEW: macOS release is provided as dmg image file
+- NEW: macOS release works on all macOS versions starting with 10.9
+- NEW: Linux releases are provided as AppImage only
+- NEW: Enable Qt HighDpiScaling - should help people with high DPI monitors
+- fixed mount/unmount on FreeBSD
+- updated build and install for Linux - now all files will be installed in /usr/local
+- fixed possible crashes when old rclone is used (with different version information output)
+- changed program icon
+- bunch of usual small tweaks and fixes
 
 ## [1.6.0] - 2019-10-27
 - fixed Windows mount/unmount (requires rclone v1.50+)
@@ -91,6 +105,7 @@
 - Mount and unmount folders on macOS and GNU/Linux
 - Optionally minimizes to tray, with notifications when upload/download finishes
 
+[1.7.0]: https://github.com/kapitainsky/RcloneBrowser/releases/tag/1.7.0
 [1.6.0]: https://github.com/kapitainsky/RcloneBrowser/releases/tag/1.6.0
 [1.5.3]: https://github.com/kapitainsky/RcloneBrowser/releases/tag/1.5.3
 [1.5.2]: https://github.com/kapitainsky/RcloneBrowser/releases/tag/1.5.2
