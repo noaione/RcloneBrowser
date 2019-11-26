@@ -25,34 +25,38 @@ MainWindow::MainWindow() {
   // disable "?" WindowContextHelpButton
   QApplication::setAttribute(Qt::AA_DisableWindowContextHelpButton);
 #endif
+  auto uisettings = GetSettings();
+  bool enableDark =
+    uisettings->value("Settings/enableDarkMode").toBool();
 
-#if defined(Q_OS_WIN)
-  QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",QSettings::NativeFormat);
-
-  if (settings.value("AppsUseLightTheme")==0) {
+  if (enableDark) {
     qApp->setStyle(QStyleFactory::create("Fusion"));
+    auto darkColor     = QColor{45, 45, 45};
+    auto disabledColor = QColor{127, 127, 127};
 
+    // Palletes based on mkvtoolnix dark mode palletes.
     QPalette darkPalette;
-    darkPalette.setColor(QPalette::Window, QColor(53,53,53));
-    darkPalette.setColor(QPalette::WindowText, Qt::white);
-    darkPalette.setColor(QPalette::Base, QColor(25,25,25));
-    darkPalette.setColor(QPalette::AlternateBase, QColor(53,53,53));
-    darkPalette.setColor(QPalette::ToolTipBase, Qt::white);
-    darkPalette.setColor(QPalette::ToolTipText, Qt::white);
-    darkPalette.setColor(QPalette::Text, Qt::white);
-    darkPalette.setColor(QPalette::Button, QColor(53,53,53));
-    darkPalette.setColor(QPalette::ButtonText, Qt::white);
-    darkPalette.setColor(QPalette::BrightText, Qt::red);
-    darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
-
-    darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
+    darkPalette.setColor(QPalette::AlternateBase,   darkColor);
+    darkPalette.setColor(QPalette::Base,            QColor{18, 18, 18});
+    darkPalette.setColor(QPalette::BrightText,      Qt::red);
+    darkPalette.setColor(QPalette::Button,          darkColor);
+    darkPalette.setColor(QPalette::ButtonText,      Qt::white);
+    darkPalette.setColor(QPalette::Disabled,        QPalette::ButtonText,      disabledColor);
+    darkPalette.setColor(QPalette::Disabled,        QPalette::HighlightedText, disabledColor);
+    darkPalette.setColor(QPalette::Disabled,        QPalette::Text,            disabledColor);
+    darkPalette.setColor(QPalette::Disabled,        QPalette::WindowText,      disabledColor);
+    darkPalette.setColor(QPalette::Highlight,       QColor{42, 130, 218});
     darkPalette.setColor(QPalette::HighlightedText, Qt::black);
+    darkPalette.setColor(QPalette::Link,            QColor{42, 130, 218});
+    darkPalette.setColor(QPalette::Text,            Qt::white);
+    darkPalette.setColor(QPalette::ToolTipBase,     Qt::white);
+    darkPalette.setColor(QPalette::ToolTipText,     Qt::white);
+    darkPalette.setColor(QPalette::Window,          darkColor);
+    darkPalette.setColor(QPalette::WindowText,      Qt::white);
 
     qApp->setPalette(darkPalette);
-
     qApp->setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }");
   }
-#endif
 
   mSystemTray.setIcon(qApp->windowIcon());
   {
@@ -132,6 +136,7 @@ MainWindow::MainWindow() {
       settings->setValue("Settings/showFileIcons", dialog.getShowFileIcons());
       settings->setValue("Settings/rowColors", dialog.getRowColors());
       settings->setValue("Settings/showHidden", dialog.getShowHidden());
+      settings->setValue("Settings/enableDarkMode", dialog.enableDarkMode());
 
       SetRclone(dialog.getRclone());
       SetRcloneConf(dialog.getRcloneConf());
@@ -744,11 +749,22 @@ void MainWindow::rcloneListRemotes() {
             QString name = parts[0].trimmed();
             QString type = parts[1].trimmed();
             QString tooltip = type;
+            auto uisettings = GetSettings();
+            bool enableDark =
+              uisettings->value("Settings/enableDarkMode").toBool();
+
+            QString img_add;
+            int size
+            if (enableDark) {
+              img_add = "_inv";
+            } else {
+              img_add = "";
+            }
 
             QString path =
-                ":/remotes/images/" + type.replace(' ', '_') + ".png";
+                ":/remotes/images/" + type.replace(' ', '_') + img_add + ".png";
             QIcon icon(QFile(path).exists() ? path
-                                            : ":/remotes/images/unknown.png");
+                                            : ":/remotes/images/unknown" + img_add + ".png");
 
             QListWidgetItem *item = new QListWidgetItem(icon, name);
             item->setData(Qt::UserRole, type);

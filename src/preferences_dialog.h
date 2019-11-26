@@ -30,6 +30,7 @@ public:
   bool getShowFileIcons() const;
   bool getRowColors() const;
   bool getShowHidden() const;
+  bool enableDarkMode() const;
 
 private:
   Ui::PreferencesDialog ui;

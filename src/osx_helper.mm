@@ -18,6 +18,19 @@ QIcon osxGetIcon(const QString& extension)
     return icon;
 }
 
+bool appearanceIsDark()
+{
+#ifdef Q_OS_OSX
+#if QT_MACOS_PLATFORM_SDK_EQUAL_OR_ABOVE(__MAC_10_14)
+    auto appearance = [NSApp.effectiveAppearance bestMatchFromAppearancesWithNames:
+        @[ NSAppearanceNameAqua, NSAppearanceNameDarkAqua ]];
+    return [appearance isEqualToString:NSAppearanceNameDarkAqua];
+#else
+    return false;
+#endif
+#endif
+}
+
 void osxShowDockIcon()
 {
     ProcessSerialNumber psn = { 0, kCurrentProcess };

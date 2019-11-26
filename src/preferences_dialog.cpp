@@ -1,5 +1,8 @@
 #include "preferences_dialog.h"
 #include "utils.h"
+#ifdef Q_OS_OSX
+#include "osx_helper.h"
+#endif
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
@@ -109,6 +112,24 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) : QDialog(parent) {
       settings->value("Settings/rowColors", true).toBool());
   ui.showHidden->setChecked(
       settings->value("Settings/showHidden", true).toBool());
+  bool dark_mode_enabled = false;
+#ifdef Q_OS_WIN
+  QSettings winsettings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",QSettings::NativeFormat);
+  if (winsettings.value("AppsUseLightTheme")==0) {
+    dark_mode_enabled = true;
+  }
+#else
+#ifdef Q_OS_OSX
+#if QT_MACOS_PLATFORM_SDK_EQUAL_OR_ABOVE(__MAC_10_14)
+  isOSXDarkMode = appearanceIsDark();
+  if (isOSXDarkMode) {
+    dark_mode_enabled = true;
+  }
+#endif
+#endif
+#endif
+  ui.enableDarkMode->setChecked(
+      settings->value("Settings/enableDarkMode", dark_mode_enabled).toBool());
 }
 
 PreferencesDialog::~PreferencesDialog() {}
@@ -175,4 +196,8 @@ bool PreferencesDialog::getRowColors() const {
 
 bool PreferencesDialog::getShowHidden() const {
   return ui.showHidden->isChecked();
+}
+
+bool PreferencesDialog::enableDarkMode() const {
+  return ui.enableDarkMode->isChecked();
 }
