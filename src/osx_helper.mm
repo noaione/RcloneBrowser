@@ -22,7 +22,7 @@ bool appearanceIsDark()
 {
     QString sysInfo = QSysInfo::productVersion();
     if (sysInfo == "10.14") {
-        auto appearance = [NSApp.effectiveAppearance bestMatchFromAppearancesWithNames:
+        auto appearance = [[NSApp mainWindow].effectiveAppearance bestMatchFromAppearancesWithNames:
             @[ NSAppearanceNameAqua, NSAppearanceNameDarkAqua ]];
         return [appearance isEqualToString:NSAppearanceNameDarkAqua];
     }
