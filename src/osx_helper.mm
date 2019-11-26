@@ -20,15 +20,13 @@ QIcon osxGetIcon(const QString& extension)
 
 bool appearanceIsDark()
 {
-#ifdef Q_OS_OSX
-#if QT_MACOS_PLATFORM_SDK_EQUAL_OR_ABOVE(__MAC_10_14)
-    auto appearance = [NSApp.effectiveAppearance bestMatchFromAppearancesWithNames:
-        @[ NSAppearanceNameAqua, NSAppearanceNameDarkAqua ]];
-    return [appearance isEqualToString:NSAppearanceNameDarkAqua];
-#else
+    QString sysInfo = QSysInfo::productVersion();
+    if (sysInfo == "10.14") {
+        auto appearance = [NSApp.effectiveAppearance bestMatchFromAppearancesWithNames:
+            @[ NSAppearanceNameAqua, NSAppearanceNameDarkAqua ]];
+        return [appearance isEqualToString:NSAppearanceNameDarkAqua];
+    }
     return false;
-#endif
-#endif
 }
 
 void osxShowDockIcon()

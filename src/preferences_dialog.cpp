@@ -120,12 +120,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) : QDialog(parent) {
   }
 #else
 #ifdef Q_OS_OSX
-#if QT_MACOS_PLATFORM_SDK_EQUAL_OR_ABOVE(__MAC_10_14)
   isOSXDarkMode = appearanceIsDark();
   if (isOSXDarkMode) {
     dark_mode_enabled = true;
   }
-#endif
 #endif
 #endif
   ui.enableDarkMode->setChecked(

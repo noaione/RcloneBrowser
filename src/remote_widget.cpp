@@ -23,6 +23,9 @@ RemoteWidget::RemoteWidget(IconCache *iconCache, const QString &remote,
   settings->setValue("Settings/driveShared", Qt::Unchecked);
   ui.tree->setAlternatingRowColors(
       settings->value("Settings/rowColors", false).toBool());
+  if (!isGoogle) {
+    ui.checkBoxShared->hide();
+  }
   ui.checkBoxShared->setChecked(false);
   ui.checkBoxShared->setDisabled(!isGoogle);
 
