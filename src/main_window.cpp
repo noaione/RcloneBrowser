@@ -754,7 +754,6 @@ void MainWindow::rcloneListRemotes() {
               uisettings->value("Settings/enableDarkMode").toBool();
 
             QString img_add;
-            int size
             if (enableDark) {
               img_add = "_inv";
             } else {
